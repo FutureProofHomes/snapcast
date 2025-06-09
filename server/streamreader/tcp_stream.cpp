@@ -44,7 +44,11 @@ TcpStream::TcpStream(PcmStream::Listener* pcmListener, boost::asio::io_context& 
     host_ = uri_.host;
     auto host_port = utils::string::split(host_, ':');
     port_ = 4953;
-    if (host_port.size() == 2)
+    if( uri.port.has_value() )
+    {
+        port_ = uri_.port.value();
+    }
+    else if (host_port.size() == 2)
     {
         host_ = host_port[0];
         port_ = cpt::stoi(host_port[1], port_);

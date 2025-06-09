@@ -144,7 +144,10 @@ std::string StreamUri::toString() const
     // TODO: path must be properly be uri encoded
     // scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
     stringstream ss;
-    ss << scheme << "://" << host << path;
+    ss << scheme << "://" << host;
+    if( port.has_value())
+        ss << ":" << port.value();
+    ss << path;
     if (!query.empty())
     {
         ss << "?";
@@ -166,7 +169,15 @@ std::string StreamUri::toString() const
 
 json StreamUri::toJson() const
 {
-    json j = {{"raw", toString()}, {"scheme", scheme}, {"host", host}, {"path", path}, {"fragment", fragment}, {"query", query}};
+    json j = {
+        {"raw", toString()}, 
+        {"scheme", scheme}, 
+        {"host", host},
+        {"port", port.has_value() ? port.value() : 0}, 
+        {"path", path}, 
+        {"fragment", fragment}, 
+        {"query", query}
+    };
     return j;
 }
 

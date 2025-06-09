@@ -71,8 +71,14 @@ PcmStreamPtr StreamManager::addStream(StreamUri& streamUri)
     if (streamUri.query.find(kUriChunkMs) == streamUri.query.end())
         streamUri.query[kUriChunkMs] = cpt::to_string(settings_.stream.streamChunkMs);
 
-    //	LOG(DEBUG) << "\nURI: " << streamUri.uri << "\nscheme: " << streamUri.scheme << "\nhost: "
-    //		<< streamUri.host << "\npath: " << streamUri.path << "\nfragment: " << streamUri.fragment << "\n";
+    LOG(DEBUG) << "\nURI: " << streamUri.uri << "\nscheme: " << streamUri.scheme 
+    		 << "\nport:";
+    if( streamUri.port.has_value() ){
+       LOG(DEBUG) << streamUri.port.value();
+    } else {
+        LOG(DEBUG) << "default";
+    }        
+    LOG(DEBUG) << "\nhost: " << streamUri.host << "\npath: " << streamUri.path << "\nfragment: " << streamUri.fragment << "\n";
 
     //	for (auto kv: streamUri.query)
     //		LOG(DEBUG) << "key: '" << kv.first << "' value: '" << kv.second << "'\n";
